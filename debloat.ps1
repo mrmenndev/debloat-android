@@ -1,14 +1,15 @@
 # config
-$version = "1.1.0"
+
 $bloat_file = "samsung.txt"
-#$bloat_file = "sony_tv.txt"
+#$bloat_file = "tv_sony.txt"
 #$remote_ip = "192.168.1.42"
 
-$user_path = Join-Path $env:USERPROFILE "Documents\platform-tools"
-$adb_path = $user_path
+$user_path = $env:USERPROFILE 
+$apk_path = Join-Path $user_path "Downloads\*.apk"
+$adb_path = Join-Path $user_path "Documents\platform-tools"
 
 #==========functions==========
-
+$version = "1.2.0"
 $name = $MyInvocation.MyCommand.Name
 $running = $true
 $packages = @()
@@ -41,7 +42,8 @@ Function Kill_ADB {
 }
 
 Function Promt_Back {
-    $promt_inner = Read-Host 'Press any key to go back or press 0 to exit'
+    Write-Host "========================================"
+    $promt_inner = Read-Host 'Press enter to go back or press 0 to exit'
     if ($promt_inner -eq 0) {
         Kill_ADB
     }
@@ -60,7 +62,6 @@ Function Bloat_Installed {
     })
     Write-Host "========================================"
     Write-Host "Count: $($bloat_installed.Count)"
-    Write-Host "========================================"
     
 }
 
@@ -76,7 +77,6 @@ Function Bloat_Not_Installed {
     })
     Write-Host "========================================"
     Write-Host "Count: $($bloat_not_installed.Count)"
-    Write-Host "========================================"
 }
 
 Function List_Installed_Packages {
@@ -89,7 +89,6 @@ Function List_Installed_Packages {
     })
     Write-Host "========================================"
     Write-Host "Count: $($packages.Count)"
-    Write-Host "========================================"
 }
 
 Function Uninstall_Bloat {
@@ -111,7 +110,6 @@ Function Uninstall_Bloat {
     })
     Write-Host "========================================"
     Write-Host "Bloatware uninstalled: $success"
-    Write-Host "========================================"
 }
 
 Function Clear_Bloat_Data{
@@ -133,7 +131,33 @@ Function Clear_Bloat_Data{
     })
     Write-Host "========================================"
     Write-Host "Bloatware cleared: $success"
+}
+
+Function Install_APKS(){
+    # List apks
+
+    $apk_list = Get-ChildItem -Path $apk_path
+    $apk_path_raw = Split-Path -Path $apk_path
+    
+    Write-Host "Following apks are found in"
+    Write-Host $apk_path_raw
     Write-Host "========================================"
+    $apk_list.ForEach({
+        Write-Host $_.Basename
+    })
+    # Propt to install apk
+    Write-Host "========================================"
+    $promt_inner = Read-Host 'Press 1 to install or press enter to go back'
+    if ($promt_inner -eq 1) {
+        $apk_list.Foreach({
+            # install apks
+            Write-Host "Install ${$_.Basename}"
+            & $adb install $_
+        })
+    }
+    else{
+        Clear-Host
+    }
 }
 
 Function Show_Info {
@@ -146,7 +170,6 @@ Function Show_Info {
     $adb_info.Foreach({
         Write-Host $_
     }) 
-    Write-Host "========================================"
 }
 
 
@@ -217,8 +240,10 @@ while ($running -eq $true){
     Write-Host "3.) bloatware - uninstall all"
     Write-Host "4.) bloatware - clear data"
     Write-Host "5.) list installed packages"
-    Write-Host "6.) info"
+    Write-Host "6.) install apks"
+    Write-Host "7.) info"
     Write-Host "0.) exit"
+    Write-Host "========================================"
 
     $promt = Read-Host 'Go to'
     Clear-Host
@@ -226,26 +251,33 @@ while ($running -eq $true){
     switch ($promt){
         1{
             Bloat_Installed
+            Promt_Back
         }
         2{
             Bloat_Not_Installed
+            Promt_Back
         }
         3{
             Uninstall_Bloat
+            Promt_Back
         }
         4{
             Clear_Bloat_Data
+            Promt_Back
         }
         5{
             List_Installed_Packages
+            Promt_Back
         }
         6{
+            Install_APKS
+        }
+        7{
             Show_Info
+            Promt_Back
         }
         0{
             Kill_ADB
         }
     }
-
-    Promt_Back
 }
