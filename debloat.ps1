@@ -1,72 +1,57 @@
 # config
-$version = "1.0.0"
+$version = "1.1.0"
 $bloat_file = "samsung.txt"
+#$bloat_file = "sony_tv.txt"
+#$remote_ip = "192.168.1.42"
+
 $user_path = Join-Path $env:USERPROFILE "Documents\platform-tools"
 $adb_path = $user_path
-#==========initial setup==========
+
+#==========functions==========
+
 $name = $MyInvocation.MyCommand.Name
 $running = $true
 $packages = @()
 $bloat_list = @()
 
-#----------
-# check if adb path is correct
-Write-Host "check if adb path is correct"
+Function Read_Packages {
+    $packages = @()
+    
+    Write-Host "read adb packages"
+    $adb_out_packages = & $adb shell "pm list packages"
 
-$adb = Join-Path $adb_path adb.exe
-if (-not ($adb | Test-Path)){
-    Write-Host "adb can't be found"
+    if ($adb_out_packages -eq $null){
+        Write-Host $adb_out_packages
+        Kill_ADB
+    }
+
+    # cleanup package result
+    $adb_out_packages.ForEach({
+        $packages += $_.Replace("package:","")
+    })
+
+    # check installed bloatware
+    $bloat_installed = $bloat_list | Where {$packages -Contains $_}
+}
+
+Function Kill_ADB {
+    Write-Host "Kill Adb-Server"
+    & $adb kill-server
     Exit
 }
 
-#----------
-# check if debloat_list.txt is there
-Write-Host "check if the bloat list called '$bloat_file' is there"
-
-if (-not ($bloat_file | Test-Path)){
-    Write-Host "'$bloat_file' can't be found"
-    Exit
+Function Promt_Back {
+    $promt_inner = Read-Host 'Press any key to go back or press 0 to exit'
+    if ($promt_inner -eq 0) {
+        Kill_ADB
+    }
+    else {
+        Clear-Host
+    }
 }
-
-#----------
-# list adb packages
-Write-Host "read adb packages"
-$adb_info =  & $adb version
-$adb_out_packages = & $adb shell "pm list packages"
-
-if ($adb_out_packages -eq $null){
-    Write-Host $adb_out_packages
-    Exit
-}
-
-# cleanup package result
-$adb_out_packages.ForEach({
-    $packages += $_.Replace("package:","")
-})
-
-#----------
-# read bloat file
-Write-Host "read bloat list"
-
-$bloat_list_raw = Get-Content $bloat_file
-
-$bloat_list_raw.ForEach({
-    if ($_.startswith("#")){
-    }
-    elseif ($_.Length -lt 3){
-    }
-    else{
-        $bloat_list += $_
-    }
-})
-
-$bloat_installed = $bloat_list | Where {$packages -Contains $_}
-
-Write-Host "Initial setup complete"
-
-#==========functions==========
 
 Function Bloat_Installed {
+    Read_Packages
     Write-Host "========================================"
     Write-Host "Following bloatware are installed: "
     Write-Host "========================================"
@@ -80,6 +65,7 @@ Function Bloat_Installed {
 }
 
 Function Bloat_Not_Installed {
+    Read_Packages
     Write-Host "========================================"
     Write-Host "Following bloatware found in '$bloat_file'" 
     Write-Host "but are not installed: "
@@ -94,6 +80,7 @@ Function Bloat_Not_Installed {
 }
 
 Function List_Installed_Packages {
+    Read_Packages
     Write-Host "========================================"
     Write-Host "Following packages are installed: "
     Write-Host "========================================"
@@ -106,6 +93,7 @@ Function List_Installed_Packages {
 }
 
 Function Uninstall_Bloat {
+    Read_Packages
     Write-Host "========================================"
     Write-Host "Uninstall bloatware"
     Write-Host "========================================"
@@ -127,6 +115,7 @@ Function Uninstall_Bloat {
 }
 
 Function Clear_Bloat_Data{
+    Read_Packages
     Write-Host "========================================"
     Write-Host "Clear data from bloatware"
     Write-Host "========================================"
@@ -150,7 +139,8 @@ Function Clear_Bloat_Data{
 Function Show_Info {
     Write-Host "========================================"
     Write-Host $name
-    Write-Host "Version: $version"
+    Write-Host "version: $version"
+    Write-Host "bloat-file: $bloat_file"
     Write-Host "--------------------------"
     Write-Host "adb:"
     $adb_info.Foreach({
@@ -159,15 +149,63 @@ Function Show_Info {
     Write-Host "========================================"
 }
 
-Function Promt_Back {
-    $promt_inner = Read-Host 'Press any key to go back or press 0 to exit'
-    if ($promt_inner -eq 0) {
-        Exit
+
+#==========initial setup==========
+
+#----------
+# check if adb path is correct
+Write-Host "check if adb path is correct"
+
+$adb = Join-Path $adb_path adb.exe
+if (-not ($adb | Test-Path)){
+    Write-Host "adb can't be found"
+    Exit
+}
+$adb_info =  & $adb version
+
+# connect to remote ip if available
+if (-not ($remote_ip -eq $Null)){
+    Write-Host "connect to $remote_ip"
+    $adb_message = [string] (& $adb connect $remote_ip ) 2>$null
+    if($adb_message.startswith("connected to")){
+        Write-Host "connected to $remote_ip"
     }
-    else {
-        Clear-Host
+    else{
+        Write-Host $adb_message
+        Kill_ADB
     }
 }
+
+#----------
+# check if debloat_list.txt is there
+Write-Host "check if the bloat list called $bloat_file is there"
+
+if (-not ($bloat_file | Test-Path)){
+    Write-Host "$bloat_file can't be found"
+    Exit
+}
+
+#----------
+# read bloat file
+Write-Host "read $bloat_file"
+
+$bloat_list_raw = Get-Content $bloat_file
+
+$bloat_list_raw.ForEach({
+    if ($_.startswith("#")){
+    }
+    elseif ($_.Length -lt 3){
+    }
+    else{
+        $bloat_list += $_
+    }
+})
+
+#----------
+# list adb packages
+Read_Packages
+
+Write-Host "Initial setup complete"
 
 #==========menu==========
 
@@ -205,7 +243,7 @@ while ($running -eq $true){
             Show_Info
         }
         0{
-            Exit
+            Kill_ADB
         }
     }
 
