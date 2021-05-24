@@ -1,23 +1,21 @@
 # config
 
 $bloat_file = "samsung.txt"
-#$bloat_file = "tv_sony.txt"
-#$remote_ip = "192.168.1.42"
+#$bloat_file = "sony_tv.txt"
+#$remote_ip = "192.168.1.40"
 
 $user_path = $env:USERPROFILE 
 $apk_path = Join-Path $user_path "Downloads\*.apk"
 $adb_path = Join-Path $user_path "Documents\platform-tools"
 
 #==========functions==========
-$version = "1.2.0"
+$version = "1.2.1"
 $name = $MyInvocation.MyCommand.Name
 $running = $true
-$packages = @()
 $bloat_list = @()
 
-Function Read_Packages {
+Function Packages {
     $packages = @()
-    
     Write-Host "read adb packages"
     $adb_out_packages = & $adb shell "pm list packages"
 
@@ -31,8 +29,7 @@ Function Read_Packages {
         $packages += $_.Replace("package:","")
     })
 
-    # check installed bloatware
-    $bloat_installed = $bloat_list | Where {$packages -Contains $_}
+    return $packages
 }
 
 Function Kill_ADB {
@@ -53,7 +50,8 @@ Function Promt_Back {
 }
 
 Function Bloat_Installed {
-    Read_Packages
+    $packages = Packages
+    $bloat_installed = $bloat_list | Where {$packages -Contains $_}
     Write-Host "========================================"
     Write-Host "Following bloatware are installed: "
     Write-Host "========================================"
@@ -66,12 +64,12 @@ Function Bloat_Installed {
 }
 
 Function Bloat_Not_Installed {
-    Read_Packages
+    $packages = Packages
+    $bloat_not_installed = $bloat_list | Where {$packages -NotContains $_}
     Write-Host "========================================"
     Write-Host "Following bloatware found in '$bloat_file'" 
     Write-Host "but are not installed: "
     Write-Host "========================================"
-    $bloat_not_installed = $bloat_list | Where {$packages -NotContains $_}
     $bloat_not_installed.Foreach({
         Write-Host $_
     })
@@ -80,7 +78,7 @@ Function Bloat_Not_Installed {
 }
 
 Function List_Installed_Packages {
-    Read_Packages
+    $packages = Packages
     Write-Host "========================================"
     Write-Host "Following packages are installed: "
     Write-Host "========================================"
@@ -92,7 +90,8 @@ Function List_Installed_Packages {
 }
 
 Function Uninstall_Bloat {
-    Read_Packages
+    $packages = Packages
+    $bloat_installed = $bloat_list | Where {$packages -Contains $_}
     Write-Host "========================================"
     Write-Host "Uninstall bloatware"
     Write-Host "========================================"
@@ -113,7 +112,6 @@ Function Uninstall_Bloat {
 }
 
 Function Clear_Bloat_Data{
-    Read_Packages
     Write-Host "========================================"
     Write-Host "Clear data from bloatware"
     Write-Host "========================================"
@@ -151,7 +149,7 @@ Function Install_APKS(){
     if ($promt_inner -eq 1) {
         $apk_list.Foreach({
             # install apks
-            Write-Host "Install ${$_.Basename}"
+            Write-Host "Install $($_.Basename)"
             & $adb install $_
         })
     }
@@ -172,10 +170,8 @@ Function Show_Info {
     }) 
 }
 
-
 #==========initial setup==========
 
-#----------
 # check if adb path is correct
 Write-Host "check if adb path is correct"
 
@@ -225,8 +221,8 @@ $bloat_list_raw.ForEach({
 })
 
 #----------
-# list adb packages
-Read_Packages
+# check if adb can list packages
+$test_packages = Packages
 
 Write-Host "Initial setup complete"
 
