@@ -1,0 +1,192 @@
+#==========Android 11==========
+
+# facebook
+com.facebook.services
+com.facebook.katana
+com.facebook.system
+com.facebook.appmanager
+
+# microsoft
+com.linkedin.android
+com.microsoft.appmanager
+com.microsoft.skydrive
+com.microsoft.office.officehubrow
+com.microsoft.office.excel
+com.microsoft.office.word
+com.microsoft.office.powerpoint
+com.microsoft.office.onenote
+
+# yandex
+com.yandex.browser
+ru.yandex.disk
+ru.yandex.searchplugin
+
+# other
+de.axelspringer.yana.zeropage
+flipboard.boxer.app
+com.touchtype.swiftkey
+com.swiftkey.swiftkeyconfigurator
+ru.samsung.catalog
+#com.whatsapp
+#com.instagram.android
+com.wsomacp
+com.skype.raider
+com.dropbox.android
+com.trustonic.tuiservice
+com.skms.android.agent
+tv.peel.app
+
+# bixby
+com.samsung.android.visionintelligence
+com.samsung.android.app.spage
+com.samsung.android.app.routines
+com.samsung.android.app.settings.bixby
+com.samsung.android.bixby.wakeup
+com.samsung.android.bixby.service
+com.samsung.android.bixby.agent
+com.samsung.android.bixby.agent.dummy
+com.samsung.android.bixbyvision.framework
+com.samsung.systemui.bixby2
+
+# knox
+com.samsung.klmsagent
+com.samsung.android.fast
+com.samsung.android.knox.containerdesktop
+com.samsung.android.knox.containercore
+com.samsung.android.knox.containeragent
+com.samsung.android.knox.pushmanager
+com.samsung.android.knox.analytics.uploader
+com.samsung.knox.securefolder
+com.knox.vpn.proxyhandler
+
+# ant
+com.dsi.ant.server
+com.dsi.ant.service.socket
+com.dsi.ant.sample.acquirechannels
+com.dsi.ant.plugins.antplus
+
+# desktop
+com.samsung.desktopsystemui
+com.sec.android.desktopcommunity
+com.sec.android.app.desktoplauncher
+com.sec.android.desktopmode.uiservice
+
+# game
+com.enhance.gameservice
+com.samsung.android.game.gamehome
+com.samsung.android.game.gametools
+#com.samsung.android.game.gos
+com.aura.oobe.samsung.gl
+
+# com.google
+com.google.ar.core
+com.google.vr.vrcore
+com.google.mainline.telemetry
+com.google.android.gm
+com.google.android.youtube
+com.google.android.googlequicksearchbox
+com.google.android.backuptransport
+com.google.android.apps.turbo
+com.google.android.apps.restore
+com.google.android.apps.tachyon
+com.google.android.gms.policy_sidecar_aps
+
+# com.samsung
+com.samsung.android.samsungpass
+com.samsung.android.samsungpassautofill
+com.samsung.android.arzone
+com.samsung.android.ardrawing
+com.samsung.android.authfw
+com.samsung.android.scloud
+com.samsung.android.mdx
+com.samsung.android.ipsgeofence
+com.samsung.android.fmm
+com.samsung.android.privateshare
+com.samsung.android.kidsinstaller
+com.samsung.android.beaconmanager
+com.samsung.android.net.wifi.wifiguider
+com.samsung.android.service.peoplestripe
+com.samsung.android.app.reminder
+com.samsung.android.app.simplesharing
+com.samsung.android.app.tips
+com.samsung.android.widgetapp.yahooedge.finance
+com.samsung.android.widgetapp.yahooedge.sport
+
+# com.android
+com.android.bookmarkprovider
+com.android.backupconfirm
+com.android.sharedstoragebackup
+com.android.stk
+com.android.stk2
+com.android.apps.tag
+com.android.hotwordenrollment.okgoogle
+com.android.hotwordenrollment.xgoogle
+
+# com.sec
+com.sec.location.nsflp2
+com.sec.spp.push
+com.sec.android.app.dexonpc
+com.sec.android.app.personalization
+com.sec.android.app.kidshome
+com.sec.android.service.health
+com.sec.android.easyMover.Agent
+
+#==========Android 07==========
+
+# legacy-knox
+com.samsung.knox.appsupdateagent
+com.sec.knox.foldercontainer
+com.sec.knox.knoxsetupwizard
+com.sec.knox.switcher
+com.sec.enterprise.knox.cloudmdm.smdms
+com.sec.enterprise.mdm.vpn
+
+# legacy-svoice
+com.samsung.voiceserviceplatform
+com.samsung.android.voicewakeup
+com.samsung.android.app.talkback
+com.samsung.svoice.sync
+com.sec.svoice.lang.de_DE
+com.sec.svoice.lang.en_GB
+com.sec.svoice.lang.es_ES
+com.sec.svoice.lang.fr_FR
+com.sec.svoice.lang.it_IT
+com.sec.svoice.lang.ru_RU
+com.sec.svoice.lang.en_US
+
+# com.google
+com.google.android.music
+com.google.android.videos
+com.google.android.talk
+com.google.android.apps.docs
+com.google.android.apps.plus
+com.google.android.apps.books
+com.google.android.apps.photos
+com.google.android.apps.magazines
+com.google.android.play.games
+com.google.android.syncadapters.calendar
+com.google.android.syncadapters.contacts
+
+# com.samsung
+com.samsung.galaxy_gifts
+com.samsung.android.easysetup
+com.samsung.android.oneconnect
+com.samsung.android.voc
+com.samsung.android.slinkcloud
+com.samsung.android.spay
+com.samsung.android.coreapps
+com.samsung.android.app.watchmanager
+com.samsung.android.app.mirrorlink
+com.samsung.android.app.vrsetupwizardstub
+com.samsung.android.bbc.bbcagent
+com.samsung.android.drivelink.stub
+com.samsung.android.dlp.service
+com.samsung.android.hmt.vrsvc
+com.samsung.android.hmt.vrshell
+com.samsung.android.email.provider
+
+com.sec.imslogger
+com.sec.smartcard.manager
+com.sec.app.samsungprintservice
+com.sec.android.app.billing
+com.sec.android.app.shealth
