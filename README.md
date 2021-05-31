@@ -26,9 +26,14 @@ TV      | 9
 
 ## Usage
 
-start script
+Start script
 ```
 .\debloat.ps1
+```
+
+Download `adb`
+```
+.\download_adb.ps1
 ```
 
 ## Default location

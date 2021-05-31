@@ -2,7 +2,7 @@
 
 $bloat_name = "samsung.txt"
 #$bloat_name = "sony_tv.txt"
-$remote_ip = "192.168.1.40"
+#$remote_ip = "192.168.1.40"
 
 $path = Get-Location
 $user_path = $env:USERPROFILE 
@@ -13,7 +13,7 @@ $apk_path = Join-Path $user_path "Downloads\*.apk"
 
 $adb = Join-Path $adb_path adb.exe
 $name = $MyInvocation.MyCommand.Name
-$version = "1.5.0"
+$version = "1.5.1"
 
 #==========functions==========
 
@@ -35,7 +35,7 @@ function parseFile {
 }
 
 function listPackages {
-    Write-Host "read ADB packages"
+    Write-Host "Read ADB packages"
 
     $packages = @()
     $packages_raw = (& $adb shell "pm list packages")
@@ -54,12 +54,12 @@ function listPackages {
 }
 
 function connectRemote {
-    Write-Host "connect to $remote_ip"
+    Write-Host "Connect to $remote_ip"
 
     $adb_message = [string] (& $adb connect $remote_ip ) 2>$null
 
     if($adb_message.startswith("connected to")){
-        Write-Host "connected to $remote_ip"
+        Write-Host "Connected to $remote_ip"
     }
     else{
         Write-Host $adb_message
@@ -68,7 +68,7 @@ function connectRemote {
 }
 
 function killADB {
-    Write-Host "Kill Adb-Server"
+    Write-Host "Kill Adb-Server" -f blue
 
     & $adb kill-server
     Exit
@@ -100,11 +100,11 @@ $bloat_list = parseFile
 
 #----------
 # check if ADB path is correct
-Write-Host "check if ADB path is correct"
+Write-Host "Check if ADB path is correct"
 
 if (-not ($adb | Test-Path)){
     Write-Host "ADB can't be found"
-    Write-Host "Make sure to download ADB and extract its content in 'adb' folder"
+    Write-Host "Use '.\download_adb.ps1' to download ADB"
     Exit
 }
 
