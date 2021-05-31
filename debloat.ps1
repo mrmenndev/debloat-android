@@ -5,11 +5,12 @@ $bloat_file = "samsung.txt"
 #$remote_ip = "192.168.1.40"
 
 $user_path = $env:USERPROFILE 
+$path = Get-Location
+$adb_path = Join-Path $path "adb\"
 $apk_path = Join-Path $user_path "Downloads\*.apk"
-$adb_path = Join-Path $user_path "Documents\platform-tools"
 
 $name = $MyInvocation.MyCommand.Name
-$version = "1.3.0"
+$version = "1.4.0"
 
 #==========functions==========
 
