@@ -1,16 +1,19 @@
 # config
 
-$bloat_file = "samsung.txt"
-#$bloat_file = "sony_tv.txt"
-#$remote_ip = "192.168.1.40"
+$bloat_name = "samsung.txt"
+#$bloat_name = "sony_tv.txt"
+$remote_ip = "192.168.1.40"
 
-$user_path = $env:USERPROFILE 
 $path = Get-Location
-$adb_path = Join-Path $path "adb\"
+$user_path = $env:USERPROFILE 
+
+$bloat_file = Join-Path $path "\config\$bloat_name"
+$adb_path = Join-Path $path "\adb"
 $apk_path = Join-Path $user_path "Downloads\*.apk"
 
+$adb = Join-Path $adb_path adb.exe
 $name = $MyInvocation.MyCommand.Name
-$version = "1.4.0"
+$version = "1.5.0"
 
 #==========functions==========
 
@@ -84,7 +87,7 @@ function promtBack {
 
 #==========init==========
 
-Write-Host "read $bloat_file"
+Write-Host "read $bloat_name"
 
 # check if bloat-file is there
 if (-not ($bloat_file | Test-Path)){
@@ -99,9 +102,9 @@ $bloat_list = parseFile
 # check if ADB path is correct
 Write-Host "check if ADB path is correct"
 
-$adb = Join-Path $adb_path adb.exe
 if (-not ($adb | Test-Path)){
     Write-Host "ADB can't be found"
+    Write-Host "Make sure to download ADB and extract its content in 'adb' folder"
     Exit
 }
 
@@ -123,7 +126,8 @@ Write-Host "Initial setup complete"
 function showInfo {
     Write-Host $name
     Write-Host "version: $version"
-    Write-Host "bloat-file: $bloat_file"
+    Write-Host "path: $path"
+    Write-Host "bloat-file: $bloat_name"
     Write-Host "--------------------------"
     Write-Host "ADB:"
     $adb_info.Foreach({

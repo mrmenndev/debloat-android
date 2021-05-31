@@ -38,6 +38,11 @@ adb
 .\adb\
 ```
 
+bloat files
+```
+.\config\
+```
+
 apk folder
 ```
 C:\Users\[User]\Downloads\
