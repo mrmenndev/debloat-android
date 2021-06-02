@@ -7,13 +7,14 @@ $bloat_name = "samsung.txt"
 $path = Get-Location
 $user_path = $env:USERPROFILE 
 
+$installed_file = Join-Path $path "installed.txt"
 $bloat_file = Join-Path $path "\config\$bloat_name"
 $adb_path = Join-Path $path "\adb"
 $apk_path = Join-Path $user_path "Downloads\*.apk"
 
 $adb = Join-Path $adb_path adb.exe
 $name = $MyInvocation.MyCommand.Name
-$version = "1.5.1"
+$version = "1.6.0"
 
 #==========functions==========
 
@@ -198,11 +199,9 @@ function showInstalledPackages {
     $packages = listPackages
 
     Write-Host "========================================"
-    Write-Host "Following packages are installed:"
-    Write-Host "========================================"
-    $packages.Foreach({
-        Write-Host $_
-    })
+    Write-Host "Installed packages can be found in"
+    Write-Host $installed_file -f yellow
+    $packages | Out-File -FilePath $installed_file
     Write-Host "========================================"
     Write-Host "Count: $($packages.Count)"
     Write-Host "========================================"

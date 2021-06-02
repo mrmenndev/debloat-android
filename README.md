@@ -74,3 +74,8 @@ Path of the current `bloat-file`
 ```
 $bloat_file
 ```
+
+Path of the `installed` application list
+```
+$installed_file
+```
