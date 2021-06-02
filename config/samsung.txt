@@ -35,6 +35,7 @@ com.dropbox.android
 com.trustonic.tuiservice
 com.skms.android.agent
 tv.peel.app
+com.epicgames.portal
 
 # bixby
 com.samsung.android.visionintelligence
@@ -111,6 +112,8 @@ com.samsung.android.app.simplesharing
 com.samsung.android.app.tips
 com.samsung.android.widgetapp.yahooedge.finance
 com.samsung.android.widgetapp.yahooedge.sport
+com.samsung.android.smartswitchassistant
+com.samsung.sree
 
 # com.android
 com.android.bookmarkprovider
