@@ -1,22 +1,32 @@
-# config
-
-$bloat_name = "samsung.txt"
-#$bloat_name = "sony_tv.txt"
-#$remote_ip = "192.168.1.40"
+#======================================
+# Config
+#======================================
 
 $path = Get-Location
 $user_path = $env:USERPROFILE 
+$config_path = Join-Path $path "\config"
+$config_file = Join-Path $config_path "config.json"
 
-$installed_file = Join-Path $path "installed.txt"
-$bloat_file = Join-Path $path "\config\$bloat_name"
-$adb_path = Join-Path $path "\adb"
-$apk_path = Join-Path $user_path "Downloads\*.apk"
-
-$adb = Join-Path $adb_path adb.exe
 $name = $MyInvocation.MyCommand.Name
-$version = "1.6.0"
+$version = "1.7.0"
 
-#==========functions==========
+#======================================
+# Functions
+#======================================
+
+function readConfig {
+    $raw = (Get-Content -Raw -Path $config_file)
+    $raw_json = @()
+    
+    $raw.ForEach({
+        $_ = $_.Replace("`$path", $path)
+        $_ = $_.Replace("`$user_path", $user_path)
+        $_ = $_.Replace("`\", "\\").Replace("`\\\\", "\\")
+        $raw_json += $_
+    })
+
+    return $raw_json | ConvertFrom-Json
+}
 
 function parseFile {
     $bloat_list = @()
@@ -86,7 +96,19 @@ function promtBack {
     }
 }
 
-#==========init==========
+#======================================
+# Init
+#======================================
+
+$config = readConfig
+
+$remote_ip = $config.remote_ip
+$has_remote_ip = [bool]$remote_ip
+$bloat_name = $config.bloat_name
+$bloat_file = Join-Path $config_path $bloat_name
+$installed_list_file = $config.installed_list_file
+$adb= Join-Path $config.adb_path "adb.exe"
+$apk_path = $config.apk_path
 
 Write-Host "read $bloat_name"
 
@@ -111,8 +133,8 @@ if (-not ($adb | Test-Path)){
 
 $adb_info = (& $adb version)
 
-# connect to remote if remote_ip is available
-if (-not ($remote_ip -eq $Null)){
+# connect to remote if remote_ip is avaliable
+if ($has_remote_ip){
     connectRemote
 }
 
@@ -122,7 +144,9 @@ $test_packages = listPackages
 
 Write-Host "Initial setup complete"
 
-#==========menu==========
+#======================================
+# Menu
+#======================================
 
 function showInfo {
     Write-Host $name
@@ -139,11 +163,14 @@ function showInfo {
 
 function installAPKs {
     # list apks
-    $apk_files = Get-ChildItem -Path $apk_path
-    $apk_path_raw = Split-Path -Path $apk_path
+    $apk_files = Get-ChildItem -Path (Join-Path $apk_path "*.apk")
+    if($apk_files.Count -eq 0){
+        Write-Host $apk_files.Length
+        return
+    }
 
     Write-Host "Following apks has been found in:"
-    Write-Host $apk_path_raw
+    Write-Host $apk_path
     Write-Host "========================================"
     $apk_files.ForEach({
         Write-Host $_.Basename
@@ -152,7 +179,7 @@ function installAPKs {
     $promt = Read-Host 'Press 1 to install or press enter to go back'
     
     # install apks
-    if (($promt -eq 1) -and ($apk_files.Count -gt 0)) {
+    if ($promt -eq 1) {
         $apk_files.Foreach({
             Write-Host "Install $($_.Basename)"
             & $adb install $_
@@ -200,8 +227,8 @@ function showInstalledPackages {
 
     Write-Host "========================================"
     Write-Host "Installed packages can be found in"
-    Write-Host $installed_file -f yellow
-    $packages | Out-File -FilePath $installed_file
+    Write-Host $installed_list_file -f yellow
+    $packages | Out-File -FilePath $installed_list_file
     Write-Host "========================================"
     Write-Host "Count: $($packages.Count)"
     Write-Host "========================================"

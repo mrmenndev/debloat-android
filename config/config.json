@@ -1,0 +1,7 @@
+{
+  "remote_ip": "",
+  "bloat_name": "samsung.txt",
+  "installed_list_file": "$path\\installed.txt",
+  "apk_path": "$user_path\\Downloads\\",
+  "adb_path": "$path\\adb\\"
+}

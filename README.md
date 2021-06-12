@@ -5,13 +5,16 @@ An interactive `powershell` script to uninstall bloatware via `adb`.
 It can debloat following devices:
 
 Samsung:
+
 - Android 10
 - Android 11
 
 Sony TV
+
 - Android 09
 
 If your device is not in the list
+
 - create a new debloat file at `.\config`
 - list all packages you want to be removed
 - modify the `$bloat_name` value inside `.\debloat.ps1` to the name of your file
@@ -21,18 +24,21 @@ If your device is not in the list
 ## Usage
 
 Start script
+
 ```
 .\debloat.ps1
 ```
 
-Connect to a remote device
-- Uncomment `$remote_ip` inside `.\debloat.ps1`
-- Edit the value to your device ip
-
-
 Download `adb`
+
 ```
 .\download_adb.ps1
+```
+
+Config file
+
+```
+.\config\config.json
 ```
 
 ---
@@ -40,44 +46,81 @@ Download `adb`
 ## Default location
 
 ADB
+
 ```
 .\adb\
 ```
 
 Bloat-Files
+
 ```
 .\config\
 ```
 
 APK folder
+
 ```
 C:\Users\[User]\Downloads\
 ```
 
-## Variables inside `.\debloat.ps1`
+# Config file
 
-Remote device ip
-```
-# If commented out it use local USB device
-$remote_ip
+Default
+
+```json
+  "remote_ip": "",
+  "bloat_name": "samsung.txt",
+  "installed_list_file": "$path\\installed.txt",
+  "apk_path": "$user_path\\Downloads\\",
+  "adb_path": "$path\\adb\\"
+}
+
 ```
 
-Name of the current `bloat-file`
+## Keys
+
+If not empty adb tries to connect to this ip, otherwise it uses USB
+
 ```
-$bloat_name
+remote_ip
+```
+
+Name of the bloat file (always with extension)
+
+```
+bloat_name
+```
+
+Where the installed application list will be created
+
+```
+installed_list_file
+```
+
+Path of all apks
+
+```
+apk_path
 ```
 
 Path of `adb`
+
 ```
-$adb_path
+adb_path
 ```
 
-Path of `apk` folder
-```
-$apk_path
+---
+
+## Dynamic values
+
+local path of the script
+
+```powershell
+$path
 ```
 
-Path of the `installed` application list
-```
-$installed_file
+User path
+
+```powershell
+$user_path
 ```
