@@ -21,7 +21,7 @@ If your device is not in the list
 
 -   create a new debloat file at `.\config`
 -   list all packages you want to be removed
--   modify the `$bloat_name` value inside `.\debloat.ps1` to the name of your file
+-   modify the `bloat_name` value inside `\config\config.json` to the name of your file
 
 ---
 
