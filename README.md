@@ -2,22 +2,26 @@
 
 An interactive `powershell` script to uninstall bloatware via `adb`.
 
+For Mac and Linux user I recommend using [Universal Android Debloater](https://gitlab.com/W1nst0n/universal-android-debloater)
+
+---
+
 It can debloat following devices:
 
 Samsung:
 
-- Android 10
-- Android 11
+-   Android 10
+-   Android 11
 
 Sony TV
 
-- Android 09
+-   Android 09
 
 If your device is not in the list
 
-- create a new debloat file at `.\config`
-- list all packages you want to be removed
-- modify the `$bloat_name` value inside `.\debloat.ps1` to the name of your file
+-   create a new debloat file at `.\config`
+-   list all packages you want to be removed
+-   modify the `$bloat_name` value inside `.\debloat.ps1` to the name of your file
 
 ---
 
