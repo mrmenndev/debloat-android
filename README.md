@@ -17,7 +17,7 @@ Sony TV
 
 -   Android 09
 
-If your device is not listed
+If your device is not listed:
 
 -   create a new debloat file at `.\config`
 -   list all packages you want to be removed
@@ -117,7 +117,7 @@ adb_path
 
 ## Dynamic values
 
-local path of the script
+Local path of the script
 
 ```powershell
 $path
