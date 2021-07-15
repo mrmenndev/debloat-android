@@ -2,7 +2,7 @@
 
 An interactive `powershell` script to uninstall bloatware via `adb`.
 
-For Mac and Linux user I recommend using [Universal Android Debloater](https://gitlab.com/W1nst0n/universal-android-debloater)
+For Mac and Linux users use [Universal Android Debloater](https://gitlab.com/W1nst0n/universal-android-debloater)
 
 ---
 
@@ -17,7 +17,7 @@ Sony TV
 
 -   Android 09
 
-If your device is not in the list
+If your device is not listed
 
 -   create a new debloat file at `.\config`
 -   list all packages you want to be removed
@@ -72,24 +72,24 @@ C:\Users\[User]\Downloads\
 Default
 
 ```json
-  "remote_ip": "",
-  "bloat_name": "samsung.txt",
-  "installed_list_file": "$path\\installed.txt",
-  "apk_path": "$user_path\\Downloads\\",
-  "adb_path": "$path\\adb\\"
+{
+    "remote_ip": "",
+    "bloat_name": "samsung.txt",
+    "installed_list_file": "$path\\installed.txt",
+    "apk_path": "$user_path\\Downloads\\",
+    "adb_path": "$path\\adb\\"
 }
-
 ```
 
 ## Keys
 
-If not empty adb tries to connect to this ip, otherwise it uses USB
+If not empty adb tries to connect to the defined ip, otherwise it uses USB connection
 
 ```
 remote_ip
 ```
 
-Name of the bloat file (always with extension)
+Name of the bloat file (with extension)
 
 ```
 bloat_name
